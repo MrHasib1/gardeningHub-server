@@ -105,20 +105,124 @@ const gardenersData = [
   },
 ];
 
+const topTrendingTipsData = [
+  {
+    title: "How I Grow Tomatoes Indoors — Even in Winter!",
+    category: "Indoor Gardening",
+    difficulty: "Medium",
+    description:
+      "Learn how to grow juicy tomatoes indoors using sunlight, grow lights, and recycled containers.",
+    image: "https://i.ibb.co.com/HpVsbdHZ/tomato.jpg",
+    totalLiked: 54,
+    createdAt: "2025-09-28T10:30:00Z",
+  },
+  {
+    title: "DIY Compost Bin Using Kitchen Waste",
+    category: "Composting",
+    difficulty: "Easy",
+    description:
+      "Turn your kitchen scraps into rich garden compost with this eco-friendly DIY bin tutorial.",
+    image: "https://i.ibb.co.com/LD0Gzppy/composed-Bin.jpg",
+    totalLiked: 71,
+    createdAt: "2025-09-25T09:00:00Z",
+  },
+  {
+    title: "The Secret to Lush Balcony Gardens",
+    category: "Balcony Gardening",
+    difficulty: "Easy",
+    description:
+      "Discover how to make your small balcony bloom beautifully with limited sunlight and space.",
+    image: "https://i.ibb.co.com/pjSBRkcX/balcony.jpg",
+    totalLiked: 63,
+    createdAt: "2025-09-23T08:20:00Z",
+  },
+  {
+    title: "5 Plants That Naturally Repel Mosquitoes",
+    category: "Plant Care",
+    difficulty: "Easy",
+    description:
+      "Keep your garden pest-free with natural mosquito-repelling plants like basil, lemongrass, and marigold.",
+    image: "https://i.ibb.co.com/xt3BK7mD/Plant-Mosquitoes.jpg",
+    totalLiked: 82,
+    createdAt: "2025-09-20T07:10:00Z",
+  },
+  {
+    title: "Hydroponic Herbs: Grow Without Soil!",
+    category: "Hydroponics",
+    difficulty: "Hard",
+    description:
+      "Step-by-step guide to growing herbs in a water-based nutrient system — perfect for urban gardeners.",
+    image: "https://i.ibb.co.com/9kpVCfyJ/Herbs.jpg",
+    totalLiked: 47,
+    createdAt: "2025-09-19T09:30:00Z",
+  },
+  {
+    title: "How to Make Organic Fertilizer at Home",
+    category: "Organic Gardening",
+    difficulty: "Medium",
+    description:
+      "Learn to make nutrient-rich organic fertilizer using banana peels, eggshells, and coffee grounds.",
+    image: "https://i.ibb.co.com/fGVbFMM0/compost.jpg",
+    totalLiked: 69,
+    createdAt: "2025-09-18T06:00:00Z",
+  },
+  {
+    title: "How to Propagate Your Plants Easily",
+    category: "Plant Propagation",
+    difficulty: "Easy",
+    description:
+      "Learn how to grow new plants from cuttings and seeds — a fun and cost-effective way to expand your garden.",
+    image: "https://i.ibb.co.com/gLcfTWB4/propCut.jpg",
+    totalLiked: 58,
+    createdAt: "2025-09-17T11:00:00Z",
+  },
+  {
+    title: "Top 5 Low-Maintenance Indoor Plants",
+    category: "Indoor Gardening",
+    difficulty: "Easy",
+    description:
+      "Perfect for busy people! Discover low-maintenance plants like Snake Plant, ZZ Plant, and Pothos.",
+    image: "https://i.ibb.co.com/9xLpZZB/low-Indoor.jpg",
+    totalLiked: 75,
+    createdAt: "2025-09-16T10:40:00Z",
+  },
+  {
+    title: "Rainwater Harvesting for Small Gardens",
+    category: "Sustainable Gardening",
+    difficulty: "Medium",
+    description:
+      "Save water and keep your plants hydrated by collecting and using rainwater efficiently.",
+    image: "https://i.ibb.co.com/wZzFK1Hb/rain.jpg",
+    totalLiked: 52,
+    createdAt: "2025-09-15T08:30:00Z",
+  },
+  {
+    title: "Best Companion Plants for a Healthy Garden",
+    category: "Plant Care",
+    difficulty: "Medium",
+    description:
+      "Pair plants wisely! Learn which plants grow better together for healthier yields and fewer pests.",
+    image: "https://i.ibb.co.com/wrSYxxRZ/compainon-Plant.jpg",
+    totalLiked: 66,
+    createdAt: "2025-09-14T09:45:00Z",
+  },
+];
+
 async function run() {
   try {
     // Connect the client to the server	(optional starting in v4.7)
     await client.connect();
     // Send a ping to confirm a successful connection
     const exploreGardeners = client.db("gardeningDB").collection("gardeners");
+    const topTrendingTips = client.db("gardeningDB").collection("trendingTips");
 
     // insert gardeners json data
     const count = await exploreGardeners.countDocuments();
     if (count === 0) {
       await exploreGardeners.insertMany(gardenersData);
-      console.log("Initial data inserted");
+      console.log("explore gardeners Initial data inserted");
     } else {
-      console.log(" Data already exists, skipping insert");
+      console.log("explore gardeners Data already exists, skipping insert");
     }
 
     app.get("/exploreGarden", async (req, res) => {
@@ -128,6 +232,15 @@ async function run() {
         .toArray();
       res.json(activeGardeners);
     });
+
+    // insert trendingTips json data
+    const count1 = await topTrendingTips.countDocuments();
+    if (count1 === 0) {
+      await topTrendingTips.insertMany(topTrendingTipsData);
+      console.log("top Trending Tips Initial data inserted");
+    } else {
+      console.log("top Trending Tips Data already exists, skipping insert");
+    }
 
     await client.db("admin").command({ ping: 1 });
     console.log(
