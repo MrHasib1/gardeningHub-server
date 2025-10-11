@@ -213,24 +213,24 @@ async function run() {
     // Connect the client to the server	(optional starting in v4.7)
     await client.connect();
     // Send a ping to confirm a successful connection
-    const exploreGardeners = client.db("gardeningDB").collection("gardeners");
+    const featureGardeners = client.db("gardeningDB").collection("gardeners");
     const topTrendingTips = client.db("gardeningDB").collection("trendingTips");
 
     // insert gardeners json data
-    const count = await exploreGardeners.countDocuments();
+    const count = await featureGardeners.countDocuments();
     if (count === 0) {
-      await exploreGardeners.insertMany(gardenersData);
+      await featureGardeners.insertMany(gardenersData);
       console.log("explore gardeners Initial data inserted");
     } else {
       console.log("explore gardeners Data already exists, skipping insert");
     }
 
-    app.get("/exploreGarden", async (req, res) => {
-      const activeGardeners = await exploreGardeners
+    app.get("/featureGarden", async (req, res) => {
+      const activeGardeners = await featureGardeners
         .find({ status: "active" })
         .limit(6)
         .toArray();
-      res.json(activeGardeners);
+      res.send(activeGardeners);
     });
 
     // insert trendingTips json data
@@ -241,6 +241,16 @@ async function run() {
     } else {
       console.log("top Trending Tips Data already exists, skipping insert");
     }
+
+    app.get("/trendingTips", async (req, res) => {
+      const topTip = await topTrendingTips
+        .find()
+        .limit(6)
+        .sort({ totalLiked: -1 })
+        .toArray();
+
+      res.send(topTip);
+    });
 
     await client.db("admin").command({ ping: 1 });
     console.log(
