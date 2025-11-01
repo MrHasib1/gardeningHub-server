@@ -208,6 +208,148 @@ const topTrendingTipsData = [
   },
 ];
 
+const exploreGardenersData = [
+  {
+    name: "Anika Rahman",
+    age: 28,
+    gender: "Female",
+    status: "active",
+    experiences: ["Balcony Gardening", "Herbs", "Organic Soil Mix"],
+    image: "https://i.ibb.co.com/zWDVpyzF/e-1.jpg",
+    totalSharedTips: 14,
+    location: "Dhaka, Bangladesh",
+    bio: "Passionate about sustainable balcony gardens and indoor herbs.",
+  },
+  {
+    name: "Rafiq Hasan",
+    age: 35,
+    gender: "Male",
+    status: "active",
+    experiences: ["Vegetable Gardening", "Composting", "Hydroponics"],
+    image:
+      "https://i.ibb.co.com/9kDsN6Sr/happy-young-man-gardening-backyard-600w-191098442.jpg",
+    totalSharedTips: 22,
+    location: "Chattogram, Bangladesh",
+    bio: "Expert in organic composting and hydroponic farming systems.",
+  },
+  {
+    name: "Tania Akter",
+    age: 26,
+    gender: "Female",
+    status: "active",
+    experiences: ["Indoor Plants", "Succulents", "DIY Pots"],
+    image:
+      "https://i.ibb.co.com/Xfyt5C0j/57716888-portrait-of-beautiful-40-years-old-woman-gardening-on-sunny-day-in-the-garden.jpg",
+    totalSharedTips: 18,
+    location: "Sylhet, Bangladesh",
+    bio: "Loves creating decorative pots and maintaining low-light plants.",
+  },
+  {
+    name: "Imran Kabir",
+    age: 40,
+    gender: "Male",
+    status: "active",
+    experiences: ["Fruit Gardening", "Soil Fertility", "Pest Control"],
+    image: "https://i.ibb.co.com/HLZjm8XG/e-4.jpg",
+    totalSharedTips: 30,
+    location: "Rajshahi, Bangladesh",
+    bio: "Fruit tree specialist with 15+ years of soil management experience.",
+  },
+  {
+    name: "Nusrat Jahan",
+    age: 31,
+    gender: "Female",
+    status: "active",
+    experiences: ["Rooftop Gardening", "Organic Farming", "Seed Saving"],
+    image: "https://i.ibb.co.com/1JRcvFjP/e-5.jpg",
+    totalSharedTips: 25,
+    location: "Khulna, Bangladesh",
+    bio: "Advocates for urban rooftop gardens and local organic food sources.",
+  },
+  {
+    name: "Sabbir Ahmed",
+    age: 29,
+    gender: "Male",
+    status: "active",
+    experiences: ["Vertical Gardening", "Irrigation Setup", "Compost Tea"],
+    image: "https://i.ibb.co.com/B565Z7TC/e-6.jpg",
+    totalSharedTips: 16,
+    location: "Barishal, Bangladesh",
+    bio: "Helps beginners build small-space gardens with vertical structures.",
+  },
+  {
+    name: "Farzana Begum",
+    age: 33,
+    gender: "Female",
+    status: "inactive",
+    experiences: ["Herbal Plants", "Propagation", "Soil Care"],
+    image: "https://i.ibb.co.com/nN928GYC/e-7.jpg",
+    totalSharedTips: 12,
+    location: "Rangpur, Bangladesh",
+    bio: "Specializes in medicinal herbs and organic propagation methods.",
+  },
+  {
+    name: "Arif Chowdhury",
+    age: 37,
+    gender: "Male",
+    status: "inactive",
+    experiences: ["Composting", "Greenhouse Maintenance"],
+    image: "https://i.ibb.co.com/bpnrbx7/e-8.jpg",
+    totalSharedTips: 8,
+    location: "Mymensingh, Bangladesh",
+    bio: "Greenhouse maintenance expert focusing on eco-friendly compost systems.",
+  },
+  {
+    name: "Sharmin Sultana",
+    age: 24,
+    gender: "Female",
+    status: "inactive",
+    experiences: ["Cactus Care", "Indoor Lighting Setup"],
+    image: "https://i.ibb.co.com/7tJR5sv9/ee-9.jpg",
+    totalSharedTips: 10,
+    location: "Dhaka, Bangladesh",
+    bio: "Loves creating minimalist cactus collections for apartment dwellers.",
+  },
+  {
+    name: "Hasan Mahmud",
+    age: 42,
+    gender: "Male",
+    status: "inactive",
+    experiences: ["Hydroponics", "Automation in Gardening"],
+    image: "https://i.ibb.co.com/1fLk9BJp/e-10.jpg",
+    totalSharedTips: 15,
+    location: "Gazipur, Bangladesh",
+    bio: "Developing automated irrigation systems for hydroponic gardens.",
+  },
+  {
+    name: "Lamia Noor",
+    age: 27,
+    gender: "Female",
+    status: "active",
+    experiences: ["Flower Gardening", "Compost Making", "Butterfly Gardens"],
+    image:
+      "https://i.ibb.co.com/391s7F0s/cheerful-woman-gardening-at-home-in-springtime-KGN32-X.jpg",
+    totalSharedTips: 19,
+    location: "Cumilla, Bangladesh",
+    bio: "Creates colorful flower beds and promotes pollinator-friendly gardening.",
+  },
+  {
+    name: "Kamrul Islam",
+    age: 38,
+    gender: "Male",
+    status: "inactive",
+    experiences: [
+      "Tree Plantation",
+      "Seed Germination",
+      "Rainwater Harvesting",
+    ],
+    image: "https://i.ibb.co.com/JR5ffbyK/maxresdefault.jpg",
+    totalSharedTips: 11,
+    location: "Jessore, Bangladesh",
+    bio: "Focuses on tree planting campaigns and rainwater-based irrigation systems.",
+  },
+];
+
 async function run() {
   try {
     // Connect the client to the server	(optional starting in v4.7)
@@ -215,6 +357,9 @@ async function run() {
     // Send a ping to confirm a successful connection
     const featureGardeners = client.db("gardeningDB").collection("gardeners");
     const topTrendingTips = client.db("gardeningDB").collection("trendingTips");
+    const exploreGardeners = client
+      .db("gardeningDB")
+      .collection("exploreGardener");
 
     // insert gardeners json data
     const count = await featureGardeners.countDocuments();
@@ -250,6 +395,20 @@ async function run() {
         .toArray();
 
       res.send(topTip);
+    });
+
+    // explore gardeners
+    const count2 = await exploreGardeners.countDocuments();
+    if (count2 === 0) {
+      await exploreGardeners.insertMany(exploreGardenersData);
+      console.log("explore gardeners Initial data inserted");
+    } else {
+      console.log("explore gardeners Data already exists, skipping insert");
+    }
+
+    app.get("/exploreGardeners", async (req, res) => {
+      const activeGardeners = await exploreGardeners.find().toArray();
+      res.send(activeGardeners);
     });
 
     await client.db("admin").command({ ping: 1 });
