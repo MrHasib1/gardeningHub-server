@@ -360,6 +360,7 @@ async function run() {
     const exploreGardeners = client
       .db("gardeningDB")
       .collection("exploreGardener");
+    const shareGardeners = client.db("gardeningDB").collection("shareTips");
 
     // insert gardeners json data
     const count = await featureGardeners.countDocuments();
@@ -409,6 +410,14 @@ async function run() {
     app.get("/exploreGardeners", async (req, res) => {
       const activeGardeners = await exploreGardeners.find().toArray();
       res.send(activeGardeners);
+    });
+
+    // share gardeners db receive
+    app.post("/shareTips", async (req, res) => {
+      const newTips = req.body;
+      // console.log(newTips);
+      const result = await shareGardeners.insertOne(newTips);
+      res.send(result);
     });
 
     await client.db("admin").command({ ping: 1 });
