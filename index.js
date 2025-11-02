@@ -420,6 +420,11 @@ async function run() {
       res.send(result);
     });
 
+    app.get("/browseTips", async (req, res) => {
+      const newBrowseTips = await shareGardeners.find().toArray();
+      res.send(newBrowseTips);
+    });
+
     await client.db("admin").command({ ping: 1 });
     console.log(
       "Pinged your deployment. You successfully connected to MongoDB!"
