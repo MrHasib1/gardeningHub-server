@@ -9,7 +9,7 @@ app.use(express.json());
 
 require("dotenv").config();
 
-const { MongoClient, ServerApiVersion } = require("mongodb");
+const { MongoClient, ServerApiVersion, ObjectId } = require("mongodb");
 
 const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@cluster0.7qxesea.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0`;
 
@@ -421,8 +421,30 @@ async function run() {
     });
 
     app.get("/browseTips", async (req, res) => {
-      const newBrowseTips = await shareGardeners.find().toArray();
+      const level = req.query.level;
+      console.log(level);
+      const query = { availability: "public" };
+
+      if (level) {
+        query.level = level;
+      }
+      const newBrowseTips = await shareGardeners.find(query).toArray();
       res.send(newBrowseTips);
+    });
+
+    // like section
+    app.patch("/browseTips/:id", async (req, res) => {
+      const id = req.params.id;
+      const updated = req.body;
+
+      const query = { _id: new ObjectId(id) };
+      const updatedDoc = {
+        $set: { totalLiked: updated.totalLiked },
+      };
+
+      const result = await shareGardeners.updateOne(query, updatedDoc);
+
+      res.send(result);
     });
 
     await client.db("admin").command({ ping: 1 });
