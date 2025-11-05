@@ -422,7 +422,6 @@ async function run() {
 
     app.get("/browseTips", async (req, res) => {
       const level = req.query.level;
-      console.log(level);
       const query = { availability: "public" };
 
       if (level) {
@@ -436,7 +435,6 @@ async function run() {
     app.patch("/browseTips/:id", async (req, res) => {
       const id = req.params.id;
       const updated = req.body;
-
       const query = { _id: new ObjectId(id) };
       const updatedDoc = {
         $set: { totalLiked: updated.totalLiked },
@@ -444,6 +442,19 @@ async function run() {
 
       const result = await shareGardeners.updateOne(query, updatedDoc);
 
+      res.send(result);
+    });
+
+    // GET all Tips data
+    app.get("/allTipsData", async (req, res) => {
+      const result = await shareGardeners.find().toArray();
+      res.send(result);
+    });
+    // delete myTips
+    app.delete("/allTipsData/:id", async (req, res) => {
+      const id = req.params.id;
+      const query = { _id: new ObjectId(id) };
+      const result = await shareGardeners.deleteOne(query);
       res.send(result);
     });
 
