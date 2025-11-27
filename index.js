@@ -490,6 +490,18 @@ async function run() {
       res.send(result);
     });
 
+    // chat section
+    const GreenChat = client.db("gardeningDB").collection("GreenChat");
+    app.post("/chatting", async (req, res) => {
+      const newMessage = req.body;
+      const result = await GreenChat.insertOne(newMessage);
+      res.send(result);
+    });
+    app.get("/getMessage", async (req, res) => {
+      const result = await GreenChat.find().toArray();
+      res.send(result);
+    });
+
     await client.db("admin").command({ ping: 1 });
     console.log(
       "Pinged your deployment. You successfully connected to MongoDB!"
