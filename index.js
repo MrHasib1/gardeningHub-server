@@ -458,6 +458,38 @@ async function run() {
       res.send(result);
     });
 
+    //single tips data
+    app.get("/allTipsData/:id", async (req, res) => {
+      const id = req.params.id;
+      const query = { _id: new ObjectId(id) };
+      const result = await shareGardeners.find(query).toArray();
+      res.send(result);
+    });
+
+    app.put("/allTipsData/:id", async (req, res) => {
+      const id = req.params.id;
+      const filter = { _id: new ObjectId(id) };
+      const Option = { upsert: true };
+
+      const updatedTip = req.body;
+      const updatedDoc = {
+        $set: updatedTip,
+      };
+      const result = await shareGardeners.updateOne(filter, updatedDoc, Option);
+      res.send(result);
+    });
+    // comment section
+    const comment = client.db("gardeningDB").collection("CommentTip");
+    app.post("/comment", async (req, res) => {
+      const newComment = req.body;
+      const result = await comment.insertOne(newComment);
+      res.send(result);
+    });
+    app.get("/getComment", async (req, res) => {
+      const result = await comment.find().toArray();
+      res.send(result);
+    });
+
     await client.db("admin").command({ ping: 1 });
     console.log(
       "Pinged your deployment. You successfully connected to MongoDB!"
